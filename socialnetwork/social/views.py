@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 class PostListView(View):#put methods for each http request you need to handle
     def get(self, request,*args, **kwargs):#handle any get requests that comes to this url
@@ -29,4 +29,17 @@ class PostListView(View):#put methods for each http request you need to handle
             'form': form,
         }
         return render(request, 'social/post_list.html', context)
+
+class PostDetailView(View):
+    def get(self, request, pk, *args, **kwargs):
+        post = Post.objects.get(pk=pk)
+        form=CommentForm()
+
+        context = {
+            'post':post,
+            'form': form,
+        }
+        
+        return render(request, 'social/post_detail.html', context)
 # Create your views here.
+ 
